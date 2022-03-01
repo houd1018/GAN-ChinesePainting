@@ -187,8 +187,8 @@ def train(**kwargs):
             fix_fake_image = netg(fix_noises)
             tv.utils.save_image(fix_fake_image.data[:64], "%s/%s.png" % (opt.save_path, epoch), normalize=True)
 
-            torch.save(netd.state_dict(),  'imgs2/' + 'netd_{0}.pth'.format(epoch))
-            torch.save(netg.state_dict(),  'imgs2/' + 'netg_{0}.pth'.format(epoch))
+            torch.save(netd.state_dict(),  opt.save_path + 'netd_{0}.pth'.format(epoch))
+            torch.save(netg.state_dict(),  opt.save_path + 'netg_{0}.pth'.format(epoch))
             
             show_tensor_images('fake', fix_fake_image, global_step)
             show_tensor_images('real', real_img, global_step)
@@ -213,8 +213,8 @@ def generate(**kwargs):
     map_location = lambda storage, loc: storage
 
     # opt.netd_path等参数有待修改
-    netd.load_state_dict(torch.load('imgs2/netd_2999.pth', map_location=map_location), False)
-    netg.load_state_dict(torch.load('imgs2/netg_2999.pth', map_location=map_location), False)
+    netd.load_state_dict(torch.load('model/netd_1114.pth', map_location=map_location), False)
+    netg.load_state_dict(torch.load('model/netg_1114.pth', map_location=map_location), False)
     netd.to(device)
     netg.to(device)
 
@@ -224,6 +224,7 @@ def generate(**kwargs):
 
     fake_image = netg(noise)
     score = netd(fake_image).detach()
+    score = score.view(len(score))
 
     # 挑选出合适的图片
     # 取出得分最高的图片
@@ -239,10 +240,10 @@ def generate(**kwargs):
 
 def main():
     # 训练模型
-    train()
-    writer.close()
+    # train()
+    # writer.close()
     # 测试生成图片
-    # generate()
+    generate()
 
 if __name__ == '__main__':
     main()
