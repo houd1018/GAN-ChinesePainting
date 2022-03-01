@@ -26,7 +26,7 @@ class Config(object):
     save_path = 'imgs2/'  # opt.netg_path生成图片的保存路径
     # 判别模型的更新频率要高于生成模型
     d_every = 1  # 每一个batch 训练一次判别器
-    g_every = 5  # 每1个batch训练一次生成模型
+    g_every = 3  # 每1个batch训练一次生成模型
     save_every = 5  # 每save_every次保存一次模型
     netd_path = None
     netg_path = None
