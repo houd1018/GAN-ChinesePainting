@@ -46,16 +46,7 @@ def train(**kwargs):
     # tv.transforms.ToTensor，将opencv读到的图片转为torch image类型（通道，像素，像素）,且把像素范围转为[0，1]
     # tv.transforms.Normalize,执行image = (image - mean)/std 数据归一化操作，一参数是mean,二参数std
     # 因为是三通道，所以mean = (0.5, 0.5, 0.5),从而转成[-1, 1]范围
-    transforms = tv.transforms.Compose([
-        # 3*96*96
-        tv.transforms.Resize(opt.img_size),   # 缩放到 img_size* img_size
-        # 中心裁剪成96*96的图片。因为本实验数据已满足96*96尺寸，可省略
-        tv.transforms.CenterCrop(opt.img_size),
-
-        # ToTensor 和 Normalize 搭配使用
-        tv.transforms.ToTensor(),
-        tv.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
+    transforms = opt.transforms
 
     # 加载数据并使用定义好的transforms对图片进行预处理,这里用的是直接定义法
     # dataset是一个包装类，将数据包装成Dataset类，方便之后传入DataLoader中
@@ -213,8 +204,8 @@ def generate(**kwargs):
     map_location = lambda storage, loc: storage
 
     # opt.netd_path等参数有待修改
-    netd.load_state_dict(torch.load('model/netd_1114.pth', map_location=map_location), False)
-    netg.load_state_dict(torch.load('model/netg_1114.pth', map_location=map_location), False)
+    netd.load_state_dict(torch.load('imgs2/netd_2999.pth', map_location=map_location), False)
+    netg.load_state_dict(torch.load('imgs2/netg_2999.pth', map_location=map_location), False)
     netd.to(device)
     netg.to(device)
 
@@ -224,7 +215,6 @@ def generate(**kwargs):
 
     fake_image = netg(noise)
     score = netd(fake_image).detach()
-    score = score.view(len(score))
 
     # 挑选出合适的图片
     # 取出得分最高的图片
@@ -240,10 +230,10 @@ def generate(**kwargs):
 
 def main():
     # 训练模型
-    # train()
-    # writer.close()
+    train()
+    writer.close()
     # 测试生成图片
-    generate()
+    # generate()
 
 if __name__ == '__main__':
     main()
