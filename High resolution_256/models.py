@@ -31,24 +31,24 @@ class NetD(nn.Module):
             nn.BatchNorm2d(self.ndf * 2),
             nn.LeakyReLU(0.2, True),
 
-            # input:(ndf, 32, 32)
+            # input:(ndf *2, 32, 32)
             nn.Conv2d(in_channels=self.ndf * 2, out_channels=self.ndf * 4, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(self.ndf * 4),
             nn.LeakyReLU(0.2, True),
 
-            # input:(ndf *2, 16, 16)
+            # input:(ndf *4, 16, 16)
             nn.Conv2d(in_channels=self.ndf * 4, out_channels=self.ndf * 8, kernel_size=4, stride=2, padding=1,
                       bias=False),
             nn.BatchNorm2d(self.ndf * 8),
             nn.LeakyReLU(0.2, True),
 
-            # input:(ndf *4, 8, 8)
+            # input:(ndf *8, 8, 8)
             nn.Conv2d(in_channels=self.ndf * 8, out_channels=self.ndf * 16, kernel_size=4, stride=2, padding=1,
                       bias=False),
             nn.BatchNorm2d(self.ndf * 16),
             nn.LeakyReLU(0.2, True),
 
-            # input:(ndf *8, 4, 4)
+            # input:(ndf *16, 4, 4)
             # output:(1, 1, 1)
             nn.Conv2d(in_channels=self.ndf * 16, out_channels=1, kernel_size=4, stride=1, padding=0, bias=True),
 
@@ -83,19 +83,19 @@ class NetG(nn.Module):
             nn.BatchNorm2d(self.ngf * 16),
             nn.ReLU(inplace=True),
 
-            # 输入一个4*4*ngf*8
+            # 输入一个4*4*ngf*16
             nn.ConvTranspose2d(in_channels=self.ngf * 16, out_channels=self.ngf * 8, kernel_size=4, stride=2, padding=1,
                                bias=False),
             nn.BatchNorm2d(self.ngf * 8),
             nn.ReLU(inplace=True),
 
-            # 输入一个8*8*ngf*4
+            # 输入一个8*8*ngf*8
             nn.ConvTranspose2d(in_channels=self.ngf * 8, out_channels=self.ngf * 4, kernel_size=4, stride=2, padding=1,
                                bias=False),
             nn.BatchNorm2d(self.ngf * 4),
             nn.ReLU(inplace=True),
 
-            # 输入一个16*16*ngf*2
+            # 输入一个16*16*ngf*4
             nn.ConvTranspose2d(in_channels=self.ngf * 4, out_channels=self.ngf * 2, kernel_size=4, stride=2, padding=1,
                                bias=False),
             nn.BatchNorm2d(self.ngf * 2),
