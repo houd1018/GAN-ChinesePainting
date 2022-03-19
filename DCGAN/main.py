@@ -205,8 +205,8 @@ def train(**kwargs):
             fix_fake_image = netg(fix_noises)
             tv.utils.save_image(fix_fake_image.data[:64], "%s/%s.png" % (opt.save_path, epoch), normalize=True)
 
-            torch.save(netd.state_dict(),  'imgs2/' + 'netd_{0}.pth'.format(epoch))
-            torch.save(netg.state_dict(),  'imgs2/' + 'netg_{0}.pth'.format(epoch))
+            torch.save(netd.state_dict(),  opt.save_path + 'netd_{0}.pth'.format(epoch))
+            torch.save(netg.state_dict(),  opt.save_path + 'netg_{0}.pth'.format(epoch))
             
             show_tensor_images('fake', fix_fake_image, global_step)
             show_tensor_images('real', real_img, global_step)
